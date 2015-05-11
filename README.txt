@@ -20,6 +20,12 @@ columns - type - (range: min - max) - additional inf
 # Missing, Possibly Relevant data
 - registered users that did not use bike sharing service
 
-# New data fields added to data set
-13 distance users - float - sum of cols 10 + 11
+# ideas for exploration of data
+A. relatedness of seasonal variables 
+B. linear relationship between all variables and users
+C. time of day and holiday, working day
+
+# cleaning data
+1. parse datetime into year, month, day, hour -done!
+2. reconfigure cols 10, 11 as one col named rental type 
 
