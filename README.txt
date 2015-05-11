@@ -28,4 +28,19 @@ C. time of day and holiday, working day
 # cleaning data
 1. parse datetime into year, month, day, hour -done!
 2. reconfigure cols 10, 11 as one col named rental type 
+3. check for NAs or invalid values
+
+# Results - Random Forests Feature Importance
+              Feature Importance
+season         season   14.09448
+holiday       holiday   12.43455
+workingday workingday   51.56861
+weather       weather   21.25630
+temp             temp   20.03885
+atemp           atemp   18.06537
+humidity     humidity   24.19294
+windspeed   windspeed   16.00416
+hour             hour   82.27093
+month           month   24.73300
+year             year   82.91560
 
