@@ -3,7 +3,8 @@
 library(ggplot2)
 library(lubridate)
 library(randomForest)
-
+library("lattice")
+set.seed(8)
 setwd("~/Documents/KaggleProjects/bike-sharing")
 
 data<-read.csv("data/train.csv")
@@ -19,10 +20,14 @@ extractFeatures <- function(data) {
                 "windspeed",
                 "hour", 
                 "month", 
-                "year")
+                "year",
+                "day",
+                "night")
   data$hour <- hour(ymd_hms(data$datetime))
   data$month <-month(ymd_hms(data$datetime))
   data$year <- year(ymd_hms(data$datetime))
+  data$day <- wday(as.Date(data$datetime),label=TRUE)
+  data$night <- lapply(data$hour,function (x) as.integer(x>7))
   return(data[,features])
 }
 rf <- randomForest(extractFeatures(data), data$count, ntree=100, importance=TRUE)
@@ -39,3 +44,18 @@ p <- ggplot(featureImportance, aes(x=reorder(Feature, Importance), y=Importance)
      theme(plot.title=element_text(size=18))
 
 ggsave("graphs/2_feature_importance.png", p)
+
+# fit a linear model to the data
+lm(data)
+
+# explore data with plots
+qplot(season,count,data=data)
+xyplot(count ~ temp, group=season,
+		data=data[data$year==2012], 	
+		auto.key=list(space="right"), 
+		jitter.x=TRUE, jitter.y=TRUE)
+hist(data$temp,main="Temperature Distribution", 
+		xlab="Temperature (Celsius)", 	
+		col="green",breaks=25)
+rug(data$temp)
+boxplot(count~temp,data=data, col="red", main="Temperature versus Bike Use", xlab="Temperature", ylab="Count")
