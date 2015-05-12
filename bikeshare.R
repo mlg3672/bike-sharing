@@ -1,5 +1,5 @@
 # This script creates a submission file for the kaggle
-# competiton on bike sharing in DCttt
+# competiton on bike sharing in DC
 library(ggplot2)
 library(lubridate)
 library(randomForest)
@@ -30,10 +30,20 @@ extractFeatures <- function(data) {
   data$night <- lapply(data$hour,function (x) as.integer(x>7))
   return(data[,features])
 }
+# random forest prediction algorithm
 rf <- randomForest(extractFeatures(data), data$count, ntree=100, importance=TRUE)
 imp <- importance(rf, type=1)
 featureImportance <- data.frame(Feature=row.names(imp), Importance=imp[,1])
 
+# uniform 
+submission <-data.frame(datetime=test$datetime, 	
+	count=50)
+# write submission file
+write.csv(submission, file = 
+	"data/1_uniform_submission.csv", row.names=FALSE)
+# compare submission to test
+
+# plot to explore data features
 p <- ggplot(featureImportance, aes(x=reorder(Feature, Importance), y=Importance)) +
      geom_bar(stat="identity", fill="#53cfff") +
      coord_flip() + 
@@ -42,7 +52,7 @@ p <- ggplot(featureImportance, aes(x=reorder(Feature, Importance), y=Importance)
      ylab("") + 
      ggtitle("Random Forest Feature Importance\n") +
      theme(plot.title=element_text(size=18))
-
+# save graph
 ggsave("graphs/2_feature_importance.png", p)
 
 # fit a linear model to the data
