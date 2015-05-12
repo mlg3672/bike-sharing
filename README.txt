@@ -2,7 +2,7 @@
 
 The purpose of this program is to forecast the use of bike sharing using training and test data from kiosk locations in the city of DC. 
 
-## Notes about original data set train.csv
+## Notes about training data set train.csv
 columns - type - (range: min - max) - additional inf
 1 datetime
 2 season ( 1 - 4) 1 = spring, 2 = sum, 3 = fall, 4 = winter
@@ -27,12 +27,14 @@ columns - type - (range: min - max) - additional inf
 - registered users that did not use bike sharing service
 - day of the week - added!
 - type of holidays (religious/ non-religious) e.g. Easter vs. Fourth of July
-- theres only one data point when whether is 4 - heavy rain, etc.
+- theres only one data point when weather is 4 i.e. heavy rain	
 
-# ideas for exploration of data
-A. relatedness of seasonal variables 
+# ideas for predicting new values
+A. uniformity
 B. linear relationship between all variables and users
-C. time of day and holiday, working day
+C. random
+D. mean, median of previous values
+E. eliminate outliers
 
 # cleaning data
 1. parse datetime into year, month, day, hour -done!
