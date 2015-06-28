@@ -4,13 +4,22 @@ library(ggplot2)
 library(lubridate)
 library(randomForest)
 library("lattice")
+library(caret)
 set.seed(8)
 setwd("~/Documents/KaggleProjects/bike-sharing")
 
 train<-read.csv("data/train.csv")
 test<-read.csv("data/test.csv")
 
-#function to add transformations to data
+#split train into testing, validation, and training
+inBuild<-createDataPartition(y=train$count,p=0.6,list=FALSE)
+validation<-train[inBuild,]
+buildData<-train[-inBuild,]
+inTrain<- createDataPartition(y=buildData$count,p=0.6,list=FALSE)
+training<-buildData[inTrain,]
+testing<-buildData[-inTrain,]
+
+#function capture feature other than count and transform data
 extractFeatures <- function(data) {
   features <- c("season",
                 "holiday",
@@ -33,9 +42,9 @@ extractFeatures <- function(data) {
   return(data[,features])
 }
 
-trainF<-extractFeatures(train)
-xnames <- colnames(train)[1:11]
-featurePlot(x=train[, xnames], y=train$count, plot="pairs")
+data<-extractFeatures(training)
+xnames <- colnames(training)[1:11]
+featurePlot(x=training[, xnames], y=training$count, plot="pairs")
 
 # random forest prediction algorithm
 rf <- randomForest(extractFeatures(data), data$count, ntree=100, importance=TRUE)
